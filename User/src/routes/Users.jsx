@@ -18,6 +18,8 @@ function Users({location,dispatch,users}){
   }=users;
 
   const userSearchProps={
+    field,
+    keyword,
     onAdd(){
       dispatch({
         type:'users/showModal',
@@ -25,8 +27,16 @@ function Users({location,dispatch,users}){
           modalType:'create'
         }
       })
-    }
-  };
+    },
+    onSearch(fieldsValue){
+      console.info(fieldsValue);
+      dispatch(routerRedux.push({
+        pathname:'/users',
+        query:{...fieldsValue,page:1}
+      }));
+    },
+  }
+
   const userListProps={
     total,
     current,
