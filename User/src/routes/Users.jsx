@@ -47,7 +47,10 @@ function Users({location,dispatch,users}){
    onEditItem(item){
      dispatch({
        type:'users/showModal',
-       currentItem:item,
+       payload:{
+         modalType:'update',
+         currentItem:item,
+       }
      })
    }
   };
@@ -57,7 +60,7 @@ function Users({location,dispatch,users}){
     type:modalType,
     onOk(data){
       dispatch({
-        type:'users/create',
+        type:'users/'+modalType,
         payload:data
       })
     },

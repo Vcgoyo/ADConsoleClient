@@ -31,7 +31,7 @@ const UserList=({
       <p>
         <a onClick={()=>onEditItem(record)}>编辑</a>
         &nbsp;
-        <Popconfirm title="确定要删除吗?" onConfirm={()=>{() => onDeleteItem(record.id)}}>
+        <Popconfirm title="确定要删除吗?" onConfirm={() => onDeleteItem(record.id)}>
         <a>删除</a>
         </Popconfirm>
       </p>
