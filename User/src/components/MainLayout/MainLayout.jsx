@@ -3,6 +3,7 @@ import { Row, Col } from 'antd';
 import LeftNav from './LeftNav';
 import ContentLayout from './ContentLayout';
 import Header from './Header';
+import Footer from './Footer';
 
 const MainLayout=({children })=>{
   return (
@@ -24,7 +25,9 @@ const MainLayout=({children })=>{
      </Col>
    </Row>
    <Row>
-     <Col span={24}>col-6</Col>
+     <Col span={24}>
+       <Footer/>
+     </Col>
    </Row>
  </div>
   )
