@@ -11,7 +11,11 @@ export default {
   namespace: 'menus',
 
   state: {
-    ItemTree:[],
+    ItemTree:[
+      {id:1,pid:0,name:'父级菜单1',ismap:false},
+      {id:2,pid:0,name:'父级菜单2',ismap:false},
+      {id:3,pid:1,name:'子级菜单1',ismap:false}
+    ],
     mode:'inline',
   },
 
@@ -97,7 +101,8 @@ export default {
       return {...state,...action.payload};
     },
     changeMode(state,action){
-      return{...state,...action.mode};
+     
+      return{...state,...action.payload};
     }
     // createSuccess(state,action){
     //   return { ...state, ...action.payload, loading: false };

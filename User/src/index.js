@@ -1,6 +1,6 @@
 import './index.html';
 import './index.css';
-import dva from 'dva';
+import dva  from 'dva';
 import 'antd/dist/antd.css'
 import { browserHistory } from 'dva/router';
 
