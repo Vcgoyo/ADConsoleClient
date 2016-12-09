@@ -3,10 +3,13 @@ import './index.css';
 import dva  from 'dva';
 import 'antd/dist/antd.css'
 import { browserHistory } from 'dva/router';
+import { useRouterHistory } from 'dva/router';
+import { createHashHistory } from 'history';
 
 // 1. Initialize
 const app = dva({
   //history: browserHistory,
+   //history: useRouterHistory(createHashHistory)({ queryKey: false }),
 });
 
 // 2. Plugins
@@ -15,6 +18,7 @@ const app = dva({
 // 3. Model
 app.model(require('./models/users'));
 app.model(require('./models/SysModels/menus'));
+app.model(require('./models/SysModels/login'));
 
 // 4. Router
 app.router(require('./router'));
