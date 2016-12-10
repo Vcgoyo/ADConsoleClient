@@ -36,6 +36,7 @@ export default {
 
   effects: {
     *query({payload},{call,put}){
+      debugger;
       yield put({type:'showLoading'});
       yield put({
         type:'updateQueryKey',

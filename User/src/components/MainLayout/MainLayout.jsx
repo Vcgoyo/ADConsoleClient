@@ -25,7 +25,7 @@ const MainLayout=({children })=>{
      </Col>
    </Row>
    <Row>
-     <Col span={24}>
+     <Col span={24} >
        <Footer/>
      </Col>
    </Row>

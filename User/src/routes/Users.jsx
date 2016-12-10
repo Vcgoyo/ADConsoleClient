@@ -82,13 +82,13 @@ function Users({location,dispatch,users}){
   };
 
   return(
-    <MainLayout location={location}>
+    //<MainLayout location={location}>
     <div className={styles.normal}>
         <UserSearch {...userSearchProps}/>
         <UserList {...userListProps}/>
         <UserModal {...userModalProps}/>
     </div>
-    </MainLayout>
+    //</MainLayout>
   );
 }
 
