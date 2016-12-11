@@ -19,7 +19,7 @@ const MainLayout=({children })=>{
        <LeftNav />
      </Col>
      <Col span={20}>
-        <ContentLayout >
+        <ContentLayout style={{'padding-left':'10px'}}>
           {children}
         </ContentLayout>
      </Col>

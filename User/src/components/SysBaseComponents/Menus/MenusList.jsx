@@ -2,7 +2,7 @@ import React,{PropTypes} from 'react';
 
 import {Table,Pagination,Popconfirm} from 'antd';
 
-const UserList=({
+const MenuList=({
   total,
   current,
   loading,
@@ -12,12 +12,12 @@ const UserList=({
   onEditItem,
 })=>{
   const columns=[{
-    title:'姓名',
+    title:'菜单名称',
     dataIndex:'name',
     key:'name',
-    render:(text)=><a href="#">{text}</a>,
+  //  render:(text)=><a href="#">{text}</a>,
   },{
-    title:"年龄",
+    title:"URL",
     dataIndex:"age",
     key:'age',
   },{
@@ -68,4 +68,4 @@ UserList.propTypes = {
   current: PropTypes.any,
 };
 
-export default UserList;
+export default MenuList;

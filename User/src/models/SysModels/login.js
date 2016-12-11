@@ -33,7 +33,7 @@ export default {
 
       //const {data}=yield call(query,parse(payload));
       if(true){
-        yield put(routerRedux.push('/users'));
+        yield put(routerRedux.push('/index'));
       }
     },
 
