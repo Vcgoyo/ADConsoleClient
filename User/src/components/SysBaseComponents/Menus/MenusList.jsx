@@ -21,10 +21,6 @@ const MenuList=({
     dataIndex:"age",
     key:'age',
   },{
-    title:"住址",
-    dataIndex:'address',
-    key:'address',
-  },{
     title:'操作',
     key:'operation',
     render:(text,record)=>(
