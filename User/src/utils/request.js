@@ -16,16 +16,19 @@ function checkStatus(response) {
 }
 //全局添加跨域请求头，及Token票据
 function optionsAppend(options){
+    debugger;
     var headers=new Headers();
     headers.set('Content-Type','text/plain');
     if(sessionStorage['Token']){
       headers.set('Authorization',sessionStorage['Token']);
     }
     var customOptions={
+      method:'GET',
       mode:'cors',
       headers:headers,
+
     }
-    return {...customOptions,...options};
+    return  Object.assign(customOptions,options);  //{...customOptions,...options};
 }
 /**
  * Requests a URL, returning a promise.
@@ -35,8 +38,16 @@ function optionsAppend(options){
  * @return {object}           An object containing either "data" or "err"
  */
 export default function request(url, options) {
-  options=optionsAppend(options);
-  return fetch(url, options)
+  //options=optionsAppend(options);
+  const headers=new Headers();
+  headers.append('Content-Type','text/plain');
+
+  if(sessionStorage['Token']){
+    document.cookie='Authorization='+sessionStorage['Token'];
+  }
+  const  coptions={mode: "cors",credentials: 'include',headers:headers};
+  Object.assign(coptions,options);
+  return fetch(url,coptions)
     .then(checkStatus)
     .then(parseJSON)
     .then((data) => ({ data }))
