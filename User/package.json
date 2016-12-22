@@ -10,7 +10,8 @@
     "history": "^4.4.1",
     "qs": "^6.2.0",
     "react": "^15.1.0",
-    "react-dom": "^15.1.0"
+    "react-dom": "^15.1.0",
+    "src": "^1.1.2"
   },
   "devDependencies": {
     "atool-build": "^0.7.6",

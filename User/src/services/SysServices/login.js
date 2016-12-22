@@ -4,7 +4,7 @@ import qs from 'qs';
 
 export async function dologin(params) {
 
-  return request('http://localhost:8082/login/v1/dologin/'+params.userName+'/'+params.password,{
+  return request('login/v1/dologin/'+params.userName+'/'+params.password,{
     method:'post',
   });
 }

@@ -1,8 +1,8 @@
 import React,{PropTypes} from 'react';
-import {routerRedux} from 'dva/router';
+
 import {Table,Pagination,Popconfirm} from 'antd';
 
-const UserList=({
+const TreeList=({
   total,
   current,
   loading,
@@ -10,10 +10,31 @@ const UserList=({
   onPageChange,
   onDeleteItem,
   onEditItem,
-  columns,
 })=>{
+  const columns=[{
+    title:'菜单名称',
+    dataIndex:'name',
+    key:'name',
+  //  render:(text)=><a href="#">{text}</a>,
+  },{
+    title:"URL",
+    dataIndex:"age",
+    key:'age',
+  },{
+    title:'操作',
+    key:'operation',
+    render:(text,record)=>(
+      <p>
+        <a onClick={()=>onEditItem(record)}>编辑</a>
+        &nbsp;
+        <Popconfirm title="确定要删除吗?" onConfirm={() => onDeleteItem(record.id)}>
+        <a>删除</a>
+        </Popconfirm>
+      </p>
+    )
+  }];
 
-  let baseColoumns=[
+  const operaColoumns=[
     {
       title:'操作',
       key:'operation',
@@ -26,16 +47,8 @@ const UserList=({
           </Popconfirm>
         </p>
       )
-    }]
-  let isPush=1;
-  for (var i = 0; i < columns.length; i++) {
-       if(baseColoumns[0].title==columns[i].title){
-          isPush=-1;
-       }
-  }
-  if(isPush>0){
-    columns.push(baseColoumns[0]);
-  }
+    }
+  ]
   return (
     <div >
       <Table
@@ -64,7 +77,6 @@ UserList.propTypes = {
   loading: PropTypes.any,
   total: PropTypes.any,
   current: PropTypes.any,
-  columns:PropTypes.array,
 };
 
-export default UserList;
+export default TreeList;

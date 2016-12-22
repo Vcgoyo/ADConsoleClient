@@ -40,6 +40,12 @@ export default {
             }
           })
         }
+        if(location.pathname==='/menulist')
+        {
+          dispatch({
+            type:'querylist',
+          })
+        }
       });
     },
   },
@@ -61,20 +67,37 @@ export default {
          {id:2,pid:0,name:'角色管理',ismap:false},
          {id:3,pid:0,name:'权限管理',ismap:false}
        ];
-      }
-
-      //const {data}=yield call(query,parse(payload));
-      if(true){
-        yield put({
-          type:'querySuccess',
-          payload:{
-            ItemTree:ItemTree
+     }},
+      *querylist({payload},{call,put}){
+          yield put({type:'showLoading'});
+          yield put({
+            type:'updateQueryKey',
+            payload:{page:1,field:'',keyword:'',...payload}
+          });
+          const {data}=yield call(menulist,parse(payload));
+          if(data){
+            yield put({
+              type:'querySuccess',
+              payload:{
+                list:data.data,
+                total:data.page.total,
+                current:data.page.current
+              }
+            });
           }
-        });
       }
+      //const {data}=yield call(query,parse(payload));
+      // if(true){
+      //   yield put({
+      //     type:'querySuccess',
+      //     payload:{
+      //       ItemTree:ItemTree
+      //     }
+      //   });
+      // }
     },
 
-  },
+  //},
 
   reducers:{
     // showLoading(state){
@@ -88,7 +111,7 @@ export default {
     },
     changeMode(state,action){
       return{...state,...action.payload};
-    }
+    },
     // createSuccess(state,action){
     //   return { ...state, ...action.payload, loading: false };
     // },
@@ -107,9 +130,9 @@ export default {
     //   })
     //   return {...state,list:newUserList,loading:false};
     // },
-    // updateQueryKey(state, action) {
-    //   return { ...state, ...action.payload };
-    // },
+    updateQueryKey(state, action) {
+      return { ...state, ...action.payload };
+    },
   }
 
 

@@ -2,7 +2,7 @@ import React,{PropTypes} from 'react';
 
 import {Table,Pagination,Popconfirm} from 'antd';
 
-const MenuList=({
+const TreeList=({
   total,
   current,
   loading,
@@ -44,12 +44,12 @@ const MenuList=({
         pagination={false}
         size="middle"
       />
-      <Pagination className='ant-table-pagination'
+      {/* <Pagination className='ant-table-pagination'
       total={total}
       current={current}
       pageSize={10}
       onChange={onPageChange}
-       />
+       /> */}
     </div>
   );
 }

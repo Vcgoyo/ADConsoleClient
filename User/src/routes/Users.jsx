@@ -1,9 +1,10 @@
 import React,{Component,PropTypes} from 'react'
 import {routerRedux} from 'dva/router';
 import {connect} from 'dva';
-import MainLayout from '../components/MainLayout/MainLayout';
+//import MainLayout from '../components/MainLayout/MainLayout';
 
-import UserList from '../components/Users/UserList';
+//import UserList from '../components/Users/UserList';
+import CommonList from '../components/SysBaseComponents/List/CommonList'
 import UserSearch from '../components/Users/UserSearch';
 import UserModal from '../components/Users/UserModal';
 
@@ -36,17 +37,35 @@ function Users({location,dispatch,users}){
       }));
     },
   }
-
+  const columns=[{
+    title:'姓名',
+    dataIndex:'name',
+    key:'name',
+    render:(text)=><a href="#">{text}</a>,
+  },{
+    title:"年龄",
+    dataIndex:"age",
+    key:'age',
+  },{
+    title:"住址",
+    dataIndex:'address',
+    key:'address',
+  }];
   const userListProps={
     total,
     current,
     loading,
+    columns,
+    type:'radio',
     dataSource:list,
     onPageChange(page){
       dispatch(routerRedux.push({
         pathname:'/users',
         query:{field,keyword,page}
       }));
+    },
+    onRowClick(record, index){
+      console.info(record, index)
     },
     onDeleteItem(id){
       dispatch({
@@ -85,7 +104,7 @@ function Users({location,dispatch,users}){
     //<MainLayout location={location}>
     <div className={styles.normal}>
         <UserSearch {...userSearchProps}/>
-        <UserList {...userListProps}/>
+        <CommonList {...userListProps}/>
         <UserModal {...userModalProps}/>
     </div>
     //</MainLayout>

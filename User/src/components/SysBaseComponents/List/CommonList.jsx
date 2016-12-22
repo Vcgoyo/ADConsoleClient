@@ -1,8 +1,7 @@
 import React,{PropTypes} from 'react';
-import {routerRedux} from 'dva/router';
-import {Table,Pagination,Popconfirm} from 'antd';
+import {Table,Pagination,Popconfirm,Button} from 'antd';
 
-const UserList=({
+const CommonList=({
   total,
   current,
   loading,
@@ -11,6 +10,11 @@ const UserList=({
   onDeleteItem,
   onEditItem,
   columns,
+  onRowChange,
+  onRowSelect,
+  onRowsSelectAll,
+  onRowClick,
+  type
 })=>{
 
   let baseColoumns=[
@@ -36,12 +40,23 @@ const UserList=({
   if(isPush>0){
     columns.push(baseColoumns[0]);
   }
+
+  const rowSelection={
+    onChange:onRowChange,
+    onSelect:onRowSelect,
+    onSelectAll: onRowsSelectAll,
+    type,
+  }
+
   return (
     <div >
       <Table
         columns={columns}
         dataSource={dataSource}
         loading={loading}
+        rowSelection={rowSelection}
+        onRowClick={onRowClick}
+        //bordered
         rowKey={record=>record.id}
         pagination={false}
         size="middle"
@@ -56,7 +71,7 @@ const UserList=({
   );
 }
 
-UserList.propTypes = {
+CommonList.propTypes = {
   onPageChange: PropTypes.func,
   onDeleteItem: PropTypes.func,
   onEditItem: PropTypes.func,
@@ -67,4 +82,4 @@ UserList.propTypes = {
   columns:PropTypes.array,
 };
 
-export default UserList;
+export default CommonList;

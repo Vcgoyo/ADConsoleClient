@@ -6,6 +6,11 @@ export async function query(params) {
   return request('/api/menus?${qs.stringify(params)}');
 }
 
+
+export async function menulist(params) {
+  return request('api/menus?${qs.stringify(params)}');
+}
+
 export async function create(params) {
   return request('/api/menus',{
     method:'post',
