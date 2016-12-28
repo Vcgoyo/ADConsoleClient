@@ -1,5 +1,5 @@
 import fetch from 'dva/fetch';
-
+import qs from 'qs';
 
 function parseJSON(response) {
   return response.json();
@@ -41,6 +41,10 @@ export default function request(url, options) {
   const baseURL="http://localhost:8082/";
 
   let curURL=baseURL+url;
+  //params=escape(qs.stringify(params));
+  // if(!options.method||options.method.toLowerCase()=='get'){
+  //   curURL=curURL+'?'+params;
+  // }
   const headers=new Headers();
   headers.append('Content-Type','text/plain');
 
