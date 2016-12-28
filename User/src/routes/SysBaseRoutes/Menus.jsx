@@ -2,28 +2,28 @@ import React,{PropTypes} from 'react';
 import {connect} from 'dva';
 import {routerRedux} from 'dva/router';
 
-import CommonList from '../components/SysBaseComponents/List/CommonList'
+import CommonList from '../../components/SysBaseComponents/List/CommonList';
+import MenuModal from '../../components/SysBaseComponents/Menus/MenuModal';
 
 
-function Menus({dispatch,users}){
-
+function Menus({dispatch,menus}){
+  let selectedrow={};
   const{
     loading,list,total,current,field,keyword,
     currentItem,modalVisible,
     modalType
-  }=users;
+  }=menus;
 
   const columns=[{
-    title:'姓名',
+    title:'菜单名称',
     dataIndex:'name',
     key:'name',
-    render:(text)=><a href="#">{text}</a>,
   },{
-    title:"年龄",
+    title:"URL",
     dataIndex:"age",
     key:'age',
   },{
-    title:"住址",
+    title:"节点类型",
     dataIndex:'address',
     key:'address',
   }];
@@ -41,7 +41,7 @@ function Menus({dispatch,users}){
       }));
     },
     onRowClick(record, index){
-      console.info(record, index)
+
     },
     onDeleteItem(id){
       dispatch({
@@ -57,20 +57,42 @@ function Menus({dispatch,users}){
          currentItem:item,
        }
      })
+   },
+   onRowSelect(record, selected, selectedRows){
+     selectedrow=selectedRows;
    }
   };
 
+  const menuModalProps={
+    visible:modalVisible,
+    item:modalType=='create'?{}:currentItem,
+    onOk(data){
+      if(modalType=='create'){
+          data.parentId=selectedrow.pid;
+      }
+      dispatch({
+        type:'menus/'+modalType,
+        payload:data
+      })
+    },
+    onCancel(){
+      dispatch({
+        type:'menus/hideModal'
+      })
+    },
+  }
   return(
     <div >
         <CommonList {...menuListProps}/>
+        <MenuModal {...menuModalProps}/>
     </div>
   );
 }
 
-Users.propTypes={
-  menus:PropTypes.object,
-  dispatch: PropTypes.func
-}
+// Users.propTypes={
+//   menus:PropTypes.object,
+//   dispatch: PropTypes.func
+// }
 
 function mapStateToProps({menus}){
   return {menus};

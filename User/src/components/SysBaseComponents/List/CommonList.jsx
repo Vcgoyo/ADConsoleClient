@@ -16,7 +16,7 @@ const CommonList=({
   onRowClick,
   type
 })=>{
-
+  //默认都带有操作按钮
   let baseColoumns=[
     {
       title:'操作',
@@ -57,7 +57,7 @@ const CommonList=({
         rowSelection={rowSelection}
         onRowClick={onRowClick}
         //bordered
-        rowKey={record=>record.id}
+        rowKey={record=>record.key}
         pagination={false}
         size="middle"
       />
