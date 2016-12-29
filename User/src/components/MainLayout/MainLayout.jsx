@@ -1,32 +1,66 @@
 import React,{PropTypes} from 'react';
-import { Row, Col } from 'antd';
+import { Row, Col,Card,Breadcrumb, Icon} from 'antd';
 import LeftNav from './LeftNav';
 import ContentLayout from './ContentLayout';
 import Header from './Header';
 import Footer from './Footer';
+import StaticCard from './StaticCard';
+import styles from './MainLayout.less';
 
 const MainLayout=({children })=>{
   return (
     <div >
-   <Row>
-     <Col span={6}>col-12</Col>
-     <Col span={18}>
-       <Header/>
-     </Col>
-   </Row>
-   <Row >
-     <Col span={4}>
-       <LeftNav />
+   <Row gutter={24}>
+     <Col span={4} >
+       <div styles={{height:'80px'}} >
+
+       </div>
      </Col>
      <Col span={20}>
-        <ContentLayout style={{'padding-left':'10px'}}>
-          {children}
-        </ContentLayout>
+       <div>
+       <Header/>
+       </div>
+     </Col>
+   </Row>
+   <Row gutter={24}>
+     <Col span={4} >
+       <div>
+          <LeftNav />
+       </div>
+     </Col>
+     <Col span={20} >
+        <div id='ContentID'>
+
+
+          <Card  bordered={false} className={styles.ContentCard}>
+            <Breadcrumb >
+              <Breadcrumb.Item href="">
+                <Icon type="home" />
+              </Breadcrumb.Item>
+              <Breadcrumb.Item href="">
+                <Icon type="user" />
+                <span>当前路径</span>
+              </Breadcrumb.Item>
+              <Breadcrumb.Item>
+                当前节点
+              </Breadcrumb.Item>
+            </Breadcrumb>
+<br/>
+          <StaticCard />
+<br/>
+          <ContentLayout >
+            {children}
+          </ContentLayout>
+
+          </Card>
+        </div>
      </Col>
    </Row>
    <Row>
      <Col span={24} >
-       <Footer/>
+       <div >
+            <Footer/>
+       </div>
      </Col>
    </Row>
  </div>
