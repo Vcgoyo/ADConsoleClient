@@ -22,9 +22,13 @@ export default {
     modalType:'create',
     mode:'inline',
     ItemTree:[
-      {id:1,pid:0,name:'用户管理',ismap:false},
-      {id:2,pid:0,name:'角色管理',ismap:false},
-      {id:3,pid:0,name:'权限管理',ismap:false}
+      {id:1,pid:0,name:'用户管理1',ismap:false},
+      {id:2,pid:1,name:'角色管理2',ismap:false},
+      {id:3,pid:2,name:'权限管理3',ismap:false},
+      {id:4,pid:3,name:'角色管理4',ismap:false},
+      {id:5,pid:4,name:'权限管理5',ismap:false},
+      {id:6,pid:5,name:'角色管理6',ismap:false},
+      {id:7,pid:6,name:'权限管理7',ismap:false}
     ]
   },
 

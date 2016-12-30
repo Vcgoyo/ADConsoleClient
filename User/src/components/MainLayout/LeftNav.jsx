@@ -44,6 +44,8 @@ const LeftNav=({menus,dispatch})=>{
   const{
     mode,ItemTree
   }=menus;
+  debugger;
+  const constItemTree=ItemTree;
   const NavMenu=LoadMenuTree(ItemTree);
   function changeMode(value){
     dispatch({
@@ -63,6 +65,7 @@ const LeftNav=({menus,dispatch})=>{
           className={styles.LeftNavCommon}
           defaultOpenKeys={['sub1']}
           mode={mode}
+          theme='Dark'
         >
           {NavMenu}
         </Menu>
