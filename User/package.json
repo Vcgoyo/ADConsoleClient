@@ -5,11 +5,13 @@
   },
   "dependencies": {
     "antd": "^2.0.1",
+    "classnames": "^2.2.5",
     "dora-plugin-browser-history": "^0.2.0",
     "dva": "^1.1.0",
     "history": "^4.4.1",
     "qs": "^6.2.0",
     "react": "^15.1.0",
+    "react-addons": "^0.9.1-deprecated",
     "react-dom": "^15.1.0",
     "src": "^1.1.2"
   },

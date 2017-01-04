@@ -1,27 +1,26 @@
 import React,{PropTypes} from 'react';
+import addons from 'react-addons';
 import { Row, Col,Card,Breadcrumb, Icon} from 'antd';
 import LeftNav from './LeftNav';
 import ContentLayout from './ContentLayout';
 import Header from './Header';
 import Footer from './Footer';
 import StaticCard from './StaticCard';
-import './MainLayout.css';
+import styles from  './MainLayout.css';
 
 const MainLayout=({children })=>{
+  // const cx = addons.classSet;
   return (
-    <div className='.app'>
-        <div className='app_header'>
-          <Row>
-            <Col span={3} className='app_main bg_dark'>Logo</Col>
+    <div className={styles.app}>
+          <Row className={styles.app_header}>
+            <Col span={3} className={styles.app_header+' '+styles.bg_dark}>Logo</Col>
             <Col span={21}>
               <Header/>
             </Col>
           </Row>
-        </div>
-        <div className='app_main'>
-          <Row>
-            <Col span={3}>
-                <div className='bg_dark'>
+          <Row className={styles.app_main}>
+            <Col span={3} className={styles.bg_dark}>
+                <div className={styles.app_main}>
                   <LeftNav />
                 </div>
             </Col>
@@ -55,14 +54,14 @@ const MainLayout=({children })=>{
               </div>
             </Col>
             </Row>
-        </div>
-        <div className='app-footer'>
           <Row>
-            <Col span={24}>
+            <Col span={3}  className={styles.bg_dark}>
+
+            </Col>
+            <Col span={21}>
                 <Footer/>
             </Col>
           </Row>
-        </div>
     </div>
   )
 }

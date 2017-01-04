@@ -1,34 +1,33 @@
-:global(.app_header) {
+/*:global(.app_header) {
   height: 50px;
 }
 :global(.bg_dark) {
   color: #a6a8b1;
   background-color: #3a3f51;
-}
+}*/
 
 [class^="ant-col-"] > div{
   //border: 1px solid;
   width: 100%
 }
-
+.app{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  /*min-height: 100%;*/
+}
 .ContentCard{
   padding: 10px 10px 10px 10px
 }
-/*.app_header{
+.app_header{
   height: 50px;
-}*/
-/*.app_header div{
-  height: 50px;
-}*/
-/*.bg_dark{
-    color: #a6a8b1;
-    background-color: #3a3f51;
-}*/
-.app_main{
-  height: 780px;
-  /*min-height: 768px;*/
 }
-/*.app_main div{
-  height: auto;
-  min-height: 768px;
-}*/
+.bg_dark{
+    color: #a6a8b1;
+    height: 100%;
+    background-color: #3a3f51;
+}
+.app_main{
+    height: 100%;
+    overflow: hidden;
+}
