@@ -1,0 +1,51 @@
+/*:global(.app_header) {
+  height: 50px;
+}
+:global(.bg_dark) {
+  color: #a6a8b1;
+  background-color: #3a3f51;
+}*/
+
+[class^="ant-col-"] > div{
+  //border: 1px solid;
+  width: 100%
+}
+.app{
+
+  width: 100%;
+  height: 100%;
+  /*min-height: 100%;*/
+}
+.ContentCard{
+  padding: 10px 10px 10px 10px
+}
+.app_header{
+  height: 50px;
+}
+.app_header_right{
+    background-color: #fff;
+    height: 100%;
+    box-shadow:0 2px 2px rgba(0, 0, 0, 0.05), 0 1px 0 rgba(0, 0, 0, 0.05);
+}
+.fixhead{
+  position:fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+.bg_dark{
+    color: #a6a8b1;
+    height: 100%;
+    background-color: #3a3f51;
+}
+.app_main{
+    height: 100%;
+    overflow: hidden;
+    height: 1500px;
+    padding-top:50px;
+}
+.app_aside_right{
+  background-color:#f6f8f8;
+  border-left: 1px solid #dee5e7;
+  height: 100%;
+}

@@ -1,5 +1,6 @@
 import React, { Component,PropTypes } from 'react';
 import {connect} from 'dva';
+import { Link } from 'dva/router'
 import { Menu, Icon, Switch } from 'antd';
 import styles from './LeftNav.less';
 const SubMenu = Menu.SubMenu;
@@ -7,23 +8,23 @@ const MenuItem=Menu.Item;
 
 
 //递归获取菜单ReactDOM节点
-const LoadMenuTree=(ItemTree)=>{
-  let menuReactDom=ItemTree.filter(item=>item.ismap==Menu.true)
+const LoadMenuTree=(ItemTree,ItemTreeall)=>{
+    let menuReactDom=ItemTreeall.filter(item=>item.ismap==false)
     menuReactDom= ItemTree.map(Menu=>{
     if(Menu.ismap==false){
       Menu.ismap=true;
       let pTree;
       let cTree;
       let hasC=false;
-      for (var i = 0; i < ItemTree.length; i++) { //判断是否当前菜单有子项菜单
-        if(ItemTree[i].pid==Menu.id){
+      for (var i = 0; i < menuReactDom.length; i++) { //判断是否当前菜单有子项菜单
+        if(menuReactDom[i].pid==Menu.id){
           hasC=true;
           break;
         }
       }
       if(hasC){
-        let  cItemTree=ItemTree.filter(item=>item.pid==Menu.id);//取出子菜单
-        cTree=LoadMenuTree(cItemTree)
+        let  cItemTree=menuReactDom.filter(item=>item.pid==Menu.id);//取出子菜单
+        cTree=LoadMenuTree(cItemTree,ItemTreeall)
         pTree= (
           <SubMenu key={Menu.id} title={<span><Icon type="mail" /><span>{Menu.name}</span></span>}>
           {cTree}
@@ -44,9 +45,8 @@ const LeftNav=({menus,dispatch})=>{
   const{
     mode,ItemTree
   }=menus;
-  debugger;
   const constItemTree=ItemTree;
-  const NavMenu=LoadMenuTree(ItemTree);
+  const NavMenu=LoadMenuTree(ItemTree,ItemTree);
   function changeMode(value){
     dispatch({
       type:'menus/changeMode',
@@ -58,16 +58,28 @@ const LeftNav=({menus,dispatch})=>{
   }
   return (
     <div >
-        <Switch  onChange={changeMode}/>
-        <br />
-        <br />
+        {/* <Switch  onChange={changeMode}/> */}
+        
         <Menu
           className={styles.LeftNavCommon}
           defaultOpenKeys={['sub1']}
-          mode={mode}
-          theme='Dark'
+          mode='inline'
+          theme='dark'
         >
           {NavMenu}
+          {/* <SubMenu key="业务维护" title={<span><Icon type="mail" /><span>业务维护</span></span>} className={styles.MenuItem}>
+            {NavMenu}
+          </SubMenu>
+          <SubMenu key="app配置" title={<span><Icon type="mail" /><span>app配置</span></span>} className={styles.MenuItem}>
+            {NavMenu}
+          </SubMenu>
+          <SubMenu key="系统配置" title={<span><Icon type="mail" /><span>系统配置</span></span>} className={styles.MenuItem}>
+            <Link to='syssetting'>{NavMenu}</Link>
+          </SubMenu>
+          <SubMenu key="用户管理"   title={<span><Icon type="mail" /><span>用户管理</span></span>}  className={styles.MenuItem}>
+            <Link to='usermanage'>{NavMenu}</Link>
+          </SubMenu> */}
+
         </Menu>
       </div>
     );
