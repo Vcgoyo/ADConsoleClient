@@ -12,9 +12,9 @@ const MainLayout=({children })=>{
   // const cx = addons.classSet;
   return (
     <div className={styles.app}>
-          <Row className={styles.app_header}>
+          <Row className={styles.app_header+' '+styles.fixhead}>
             <Col span={3} className={styles.app_header+' '+styles.bg_dark}>Logo</Col>
-            <Col span={21}>
+            <Col span={21} className={styles.app_header_right}>
               <Header/>
             </Col>
           </Row>
@@ -48,8 +48,8 @@ const MainLayout=({children })=>{
                   </Card>
                 </div>
             </Col>
-            <Col span={4}>
-              <div className='app-aside-right'>
+            <Col span={4} className={styles.app_aside_right}>
+              <div >
                  asideright
               </div>
             </Col>
