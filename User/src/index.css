@@ -6,4 +6,18 @@
     min-height: 100%;
     margin: 0px;
   }
+  *{
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+  }
+  a{
+    color: #121213;
+    text-decoration:none;
+    cursor: pointer;
+  }
+  li{
+    display:list-item;
+    text-align: -webkit-match-parent;
+  }
 }
