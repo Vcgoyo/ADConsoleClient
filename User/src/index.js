@@ -34,7 +34,7 @@ const app = dva({
 app.model(require('./models/users'));
 app.model(require('./models/SysModels/menus'));
 app.model(require('./models/SysModels/login'));
-
+app.model(require('./models/SysModels/header'));
 // 4. Router
 app.router(require('./router'));
 

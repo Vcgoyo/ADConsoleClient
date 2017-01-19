@@ -53,12 +53,12 @@ export default {
             }
           })
         }
-        if(location.pathname==='/menus')
-        {
-          dispatch({
-            type:'querylist',
-          })
-        }
+        // if(location.pathname==='/menus')
+        // {
+        //   dispatch({
+        //     type:'querylist',
+        //   })
+        // }
       });
     },
   },
@@ -66,21 +66,19 @@ export default {
   effects: {
     *query({payload},{call,put}){
       yield put({type:'showLoading'});
-      let ItemTree;
-      if(payload.menuType=='SysSetting'){
-        ItemTree=[
-         {id:1,pid:0,name:'SEO设置',ismap:false},
-         {id:2,pid:0,name:'站点配置',ismap:false},
-         {id:3,pid:0,name:'负载均衡配置',ismap:false}
-       ];
-      }
-      if(payload.menuType=='UserManage'){
-        ItemTree=[
-         {id:1,pid:0,name:'用户管理',ismap:false},
-         {id:2,pid:0,name:'角色管理',ismap:false},
-         {id:3,pid:0,name:'权限管理',ismap:false}
-       ];
-     }},
+      const  ItemTree=[
+       {id:1,pid:0,name:'SEO设置',ismap:false},
+       {id:2,pid:0,name:'站点配置',ismap:false},
+       {id:3,pid:0,name:'负载均衡配置',ismap:false}
+     ];
+     debugger;
+     yield put({
+       type:'querySysMenus',
+       payload:{
+         ItemTree:ItemTree
+       }
+     })
+    },
       *querylist({payload},{call,put}){
           yield put({type:'showLoading'});
 
@@ -197,6 +195,7 @@ export default {
   //},
 
   reducers:{
+
     showLoading(state){
       return {...state,loading:true}
     },
@@ -210,7 +209,7 @@ export default {
       return {...state,...action.payload,loading:false};
     },
     querySysMenus(state,action){
-      return {...state,...action.payload.ItemTree};
+      return {...state,...action.payload};
     },
     hideModal(state){
       return {...state,modalVisible:false}

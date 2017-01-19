@@ -3,6 +3,7 @@ import {connect} from 'dva';
 import { Link } from 'dva/router'
 import { Menu, Icon, Switch } from 'antd';
 import styles from './LeftNav.less';
+import wapperComponentsLifecycle from '../../utils/componentsUtils'
 const SubMenu = Menu.SubMenu;
 const MenuItem=Menu.Item;
 
@@ -41,7 +42,7 @@ const LoadMenuTree=(ItemTree,ItemTreeall)=>{
   }
 }
 
-const LeftNav=({menus,dispatch})=>{
+const LeftNavbefore=({menus,dispatch})=>{
   const{
     mode,ItemTree
   }=menus;
@@ -59,7 +60,7 @@ const LeftNav=({menus,dispatch})=>{
   return (
     <div >
         {/* <Switch  onChange={changeMode}/> */}
-        
+
         <Menu
           className={styles.LeftNavCommon}
           defaultOpenKeys={['sub1']}
@@ -84,6 +85,17 @@ const LeftNav=({menus,dispatch})=>{
       </div>
     );
   }
+
+
+  function DidMount({props}) {
+    debugger;
+    const{ dispatch}=props;
+    dispatch({
+      type:'menus/query',
+    })
+  }
+
+  let LeftNav=wapperComponentsLifecycle({DidMount})(LeftNavbefore);
 
   function mapStateToProps({menus}){
     return {menus};
