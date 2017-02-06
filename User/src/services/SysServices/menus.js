@@ -2,31 +2,30 @@ import request from '../../utils/request';
 
 import qs from 'qs';
 
-export async function query(params) {
-  return request('/api/menus?${qs.stringify(params)}');
-}
-
 
 export async function menulist(params) {
-  return request('api/menus?${qs.stringify(params)}');
+  return request('poweritem/v1/menuslist?'+qs.stringify(params),{});
 }
 
 export async function create(params) {
-  return request('/api/menus',{
+  return request('poweritem/v1/menus',{
     method:'post',
-    body:qs.stringify(params),
+    body:JSON.stringify(params),
   });
 }
 
 export async function update(params) {
-  return request('/api/menus',{
+  return request('poweritem/v1/menus/'+params.id,{
     method:'put',
-    body:qs.stringify(params),
+    body:JSON.stringify(params),
   });
 }
 export async function remove(params) {
-  return request('/api/menus', {
+  return request('poweritem/v1/menus/'+params.id, {
     method: 'delete',
-    body: qs.stringify(params),
+    //body: JSON.stringify(params),
   });
+}
+export async function queryChilds(params){
+  return request('poweritem/v1/menus?pid='+params.id)
 }

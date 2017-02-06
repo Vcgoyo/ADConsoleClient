@@ -3,7 +3,7 @@ import {Table,Pagination,Popconfirm,Button} from 'antd';
 
 const CommonList=({
   total,
-  current,
+  currentPage,
   loading,
   dataSource,
   onPageChange,
@@ -14,7 +14,11 @@ const CommonList=({
   onRowSelect,
   onRowsSelectAll,
   onRowClick,
-  type
+  expandedRowRender,
+  onExpand,
+  indentSize,
+  type,
+  pageShow,
 })=>{
   //默认都带有操作按钮
   let baseColoumns=[
@@ -40,7 +44,9 @@ const CommonList=({
   if(isPush>0){
     columns.push(baseColoumns[0]);
   }
-
+  if(!pageShow){
+    pageShow='block';
+  }
   const rowSelection={
     onChange:onRowChange,
     onSelect:onRowSelect,
@@ -56,15 +62,20 @@ const CommonList=({
         loading={loading}
         rowSelection={rowSelection}
         onRowClick={onRowClick}
+        // onExpand={onExpand}
+        // expandedRowRender={expandedRowRender}
         //bordered
-        rowKey={record=>record.key}
+        rowKey={record=>record.id}
+        // indentSize={indentSize}
         pagination={false}
         size="middle"
       />
-      <Pagination className='ant-table-pagination'
+      <br/>
+      <Pagination style={{display:pageShow}}
+      size="small"
       total={total}
-      current={current}
-      pageSize={10}
+      current={parseInt(currentPage)}
+      pageSize={20}
       onChange={onPageChange}
        />
     </div>

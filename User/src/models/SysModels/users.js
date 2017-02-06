@@ -3,7 +3,7 @@
 
 //import request from '../utils/request';
 
-import {query,create,update,remove} from '../services/users';
+import {query,create,update,remove,rolelist} from '../../services/SysServices/users';
 import {parse} from 'qs';
 
 export default {
@@ -13,10 +13,12 @@ export default {
   state: {
     list:[],
     field:'',
+    allrolelist:[],
     keyword:'',
     total:null,
     loading:false,
-    current:1,
+    currentPage:1,
+    pageSize:20,
     currentItem:{},
     modalVisible:false,
     modalType:'create',
@@ -39,31 +41,33 @@ export default {
       yield put({type:'showLoading'});
       yield put({
         type:'updateQueryKey',
-        payload:{page:1,field:'',keyword:'',...payload}
+        payload:{currentPage:1,pageSize:20,field:'',keyword:'',...payload}
       });
+      payload={currentPage:1,pageSize:20,...payload};
       const {data}=yield call(query,parse(payload));
-      if(data){
+      if(data.success){
         yield put({
           type:'querySuccess',
           payload:{
             list:data.data,
-            total:data.page.total,
-            current:data.page.current
+            total:data.recordCount,
+            current:payload.currentPage
           }
         });
       }
     },
-    *create({payload},{call,put}){
+    *create({payload},{call,put,select}){
       yield put({type:'showLoading'});
       yield put({type:'hideModal'});
       const {data}=yield call(create,payload);
       if(data&&data.success){
+         const currentPage=yield select(state=>state.currentPage)
         yield put({
           type:'createSuccess',
           payload:{
             list: data.data,
-            total: data.page.total,
-            current: data.page.current,
+            total: data.recordCount,
+            current:currentPage,
             field: '',
             keyword: '',
           }
@@ -91,11 +95,28 @@ export default {
       if(data&&data.success){
         yield put({
           type:'updateSuccess',
-          payload:newUsers
+          payload:{
+            newUsers:data.data
+          }
         }
         )
       }
     },
+    *showModalWithRemote({payload},{call,put}){
+      yield put({
+        type:'showModal',
+        payload
+      })
+      const {data}=yield call(rolelist,{});
+      if(data&&data.success){
+        yield put({
+          type:'rolesLoading',
+          payload:{
+            allrolelist:data.data
+          }
+        })
+      }
+    }
   },
 
   reducers:{
@@ -107,6 +128,9 @@ export default {
     },
     hideModal(state){
       return {...state,modalVisible:false}
+    },
+    rolesLoading(state,action){
+      return {...state,...action.payload}
     },
     querySuccess(state,action){
       return {...state,...action.payload,loading:false};
@@ -120,7 +144,7 @@ export default {
       return {...state,list:newUserList,loading: false};
     },
     updateSuccess(state,action){
-      const updateUser=action.payload;
+      const updateUser=action.payload.newUsers;
       const newUserList=state.list.map(user=>{
         if(user.id==updateUser.id){
           return {...user,...updateUser};
@@ -130,7 +154,7 @@ export default {
       return {...state,list:newUserList,loading:false};
     },
     updateQueryKey(state, action) {
-      return { ...state, ...action.payload };
+      return { ...state, ...action.payload};
     },
   }
 

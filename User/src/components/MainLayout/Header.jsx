@@ -4,24 +4,28 @@ import { Link } from 'dva/router'
 import { Menu, Icon } from 'antd';
 import styles from './Header.less';
 const SubMenu = Menu.SubMenu;
+import wapperComponentsLifecycle from '../../utils/componentsUtils'
 
-const Header=({header,dispatch})=>{
+const HeaderBefore=({baseSysModel,dispatch})=>{
 
   const {
-          userName,
+          curUser,
           handImage,
           settingPercent,
           isNewHelp,
           dropDownMenuVisible
-        }=header;
+        }=baseSysModel;
 
         const toggleDropDownMenu=()=>{
-          debugger;
           dispatch({
-            type:'header/toggleDropDownMenu',
+            type:'baseSysModel/toggleDropDownMenu',
           })
         }
-
+  function Logout() {
+    dispatch({
+      type:'baseSysModel/logOut'
+    })
+  }
   return (
     <div className={styles.header_div}>
       <ul className={styles.header_right}>
@@ -29,7 +33,7 @@ const Header=({header,dispatch})=>{
         <li className={styles.dropdown}>
           <a href="#" onClick={toggleDropDownMenu}  className={styles.li_a}>
             <span className={styles.title_font}>
-              {userName}
+              {curUser?curUser.username:''}
             </span>
             <Icon type="caret-down" />
             <span className={styles.img_span}>
@@ -66,9 +70,9 @@ const Header=({header,dispatch})=>{
               <li className={styles.divider}>
               </li>
               <li>
-                <Link to='syssetting'>
+                <a  onClick={Logout}>
                   Logout
-                </Link>
+                </a>
               </li>
             </ul>
     </div>
@@ -77,8 +81,17 @@ const Header=({header,dispatch})=>{
    )
 }
 
-  function mapStateToProps({header}){
-    return {header};
+  function DidMount({props}) {
+    const{ dispatch}=props;
+    dispatch({
+      type:'baseSysModel/userMsgLoading',
+    })
+  }
+
+  let Header=wapperComponentsLifecycle({DidMount})(HeaderBefore);
+
+  function mapStateToProps({baseSysModel}){
+    return {baseSysModel};
   }
 
 export default connect(mapStateToProps)(Header);

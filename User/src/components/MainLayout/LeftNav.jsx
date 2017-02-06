@@ -24,16 +24,16 @@ const LoadMenuTree=(ItemTree,ItemTreeall)=>{
         }
       }
       if(hasC){
-        let  cItemTree=menuReactDom.filter(item=>item.pid==Menu.id);//取出子菜单
+        let  cItemTree=menuReactDom.filter(item=>item.parentid==Menu.id);//取出子菜单
         cTree=LoadMenuTree(cItemTree,ItemTreeall)
         pTree= (
-          <SubMenu key={Menu.id} title={<span><Icon type="mail" /><span>{Menu.name}</span></span>}>
+          <SubMenu key={Menu.id} title={<span><Icon type={Menu.iconsclass} /><span>{Menu.itemname}</span></span>}>
           {cTree}
           </SubMenu>
         )
         return pTree;
       }else{
-         return (<MenuItem key={Menu.id}>{Menu.name}</MenuItem>);
+         return (<MenuItem key={Menu.id}><Link to={Menu.itemurl}><Icon type={Menu.iconsclass} />{Menu.itemname}</Link></MenuItem>);
       }
   }
   })
@@ -42,18 +42,24 @@ const LoadMenuTree=(ItemTree,ItemTreeall)=>{
   }
 }
 
-const LeftNavbefore=({menus,dispatch})=>{
+const LeftNavbefore=({baseSysModel,dispatch})=>{
+
   const{
-    mode,ItemTree
-  }=menus;
-  const constItemTree=ItemTree;
-  const NavMenu=LoadMenuTree(ItemTree,ItemTree);
+    mode,Menus
+  }=baseSysModel;
+
+  //给每一项增加 ismap属性 提高菜单树生成效率
+    Menus.forEach((e,i)=>{
+      e.ismap=false;
+    })
+  const constItemTree=Menus;
+  const NavMenu=LoadMenuTree(Menus,Menus);
   function changeMode(value){
     dispatch({
       type:'menus/changeMode',
       payload:{
         mode:value?'vertical':'inline',
-        ItemTree:ItemTree
+        ItemTree:wapperMenus
       }
     })
   }
@@ -68,19 +74,6 @@ const LeftNavbefore=({menus,dispatch})=>{
           theme='dark'
         >
           {NavMenu}
-          {/* <SubMenu key="业务维护" title={<span><Icon type="mail" /><span>业务维护</span></span>} className={styles.MenuItem}>
-            {NavMenu}
-          </SubMenu>
-          <SubMenu key="app配置" title={<span><Icon type="mail" /><span>app配置</span></span>} className={styles.MenuItem}>
-            {NavMenu}
-          </SubMenu>
-          <SubMenu key="系统配置" title={<span><Icon type="mail" /><span>系统配置</span></span>} className={styles.MenuItem}>
-            <Link to='syssetting'>{NavMenu}</Link>
-          </SubMenu>
-          <SubMenu key="用户管理"   title={<span><Icon type="mail" /><span>用户管理</span></span>}  className={styles.MenuItem}>
-            <Link to='usermanage'>{NavMenu}</Link>
-          </SubMenu> */}
-
         </Menu>
       </div>
     );
@@ -88,17 +81,16 @@ const LeftNavbefore=({menus,dispatch})=>{
 
 
   function DidMount({props}) {
-    debugger;
     const{ dispatch}=props;
     dispatch({
-      type:'menus/query',
+      type:'baseSysModel/loadingMenus',
     })
   }
 
   let LeftNav=wapperComponentsLifecycle({DidMount})(LeftNavbefore);
 
-  function mapStateToProps({menus}){
-    return {menus};
+  function mapStateToProps({baseSysModel}){
+    return {baseSysModel};
   }
 
   export default connect(mapStateToProps)(LeftNav);

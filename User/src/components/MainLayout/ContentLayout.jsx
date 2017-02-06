@@ -4,12 +4,10 @@ import styles from './ContentLayout.less';
 
 const ContentLayout=({children })=>{
   return (
-    <div className={styles.normal}>
-        <div className={styles.content}>
+    <div >
         <div className={styles.main}>
           {children}
           </div>
-        </div>
     </div>
   )
 }

@@ -3,7 +3,7 @@
 
 //import request from '../utils/request';
 
-import {query,create,update,remove} from '../../services/SysServices/menus';
+import {query,menulist,create,update,remove,queryChilds} from '../../services/SysServices/menus';
 import {parse} from 'qs';
 
 export default {
@@ -16,19 +16,19 @@ export default {
     keyword:'',
     total:null,
     loading:false,
-    current:1,
+    currentPage:1,
     currentItem:{},
     modalVisible:false,
     modalType:'create',
     mode:'inline',
     ItemTree:[
-      {id:1,pid:0,name:'用户管理1',ismap:false},
-      {id:2,pid:1,name:'角色管理2',ismap:false},
-      {id:3,pid:2,name:'权限管理3',ismap:false},
-      {id:4,pid:3,name:'角色管理4',ismap:false},
-      {id:5,pid:4,name:'权限管理5',ismap:false},
-      {id:6,pid:5,name:'角色管理6',ismap:false},
-      {id:7,pid:6,name:'权限管理7',ismap:false}
+      // {id:1,pid:0,name:'用户管理1',ismap:false},
+      // {id:2,pid:1,name:'角色管理2',ismap:false},
+      // {id:3,pid:2,name:'权限管理3',ismap:false},
+      // {id:4,pid:3,name:'角色管理4',ismap:false},
+      // {id:5,pid:4,name:'权限管理5',ismap:false},
+      // {id:6,pid:5,name:'角色管理6',ismap:false},
+      // {id:7,pid:6,name:'权限管理7',ismap:false}
     ]
   },
 
@@ -53,12 +53,13 @@ export default {
             }
           })
         }
-        // if(location.pathname==='/menus')
-        // {
-        //   dispatch({
-        //     type:'querylist',
-        //   })
-        // }
+        if(location.pathname==='/menuslist')
+        {
+          dispatch({
+            type:'querylist',
+            payload:location.querylist
+          })
+        }
       });
     },
   },
@@ -71,7 +72,6 @@ export default {
        {id:2,pid:0,name:'站点配置',ismap:false},
        {id:3,pid:0,name:'负载均衡配置',ismap:false}
      ];
-     debugger;
      yield put({
        type:'querySysMenus',
        payload:{
@@ -81,93 +81,45 @@ export default {
     },
       *querylist({payload},{call,put}){
           yield put({type:'showLoading'});
-
-          let list = [{
-            key: 1,
-            name: 'John Brown sr.',
-            age: 60,
-            address: 'New York No. 1 Lake Park',
-            children: [{
-              key: 11,
-              name: 'John Brown',
-              age: 42,
-              address: 'New York No. 2 Lake Park',
-            }, {
-              key: 12,
-              name: 'John Brown jr.',
-              age: 30,
-              address: 'New York No. 3 Lake Park',
-              children: [{
-                key: 121,
-                name: 'Jimmy Brown',
-                age: 16,
-                address: 'New York No. 3 Lake Park',
-              }],
-            }, {
-              key: 13,
-              name: 'Jim Green sr.',
-              age: 72,
-              address: 'London No. 1 Lake Park',
-              children: [{
-                key: 131,
-                name: 'Jim Green',
-                age: 42,
-                address: 'London No. 2 Lake Park',
-                children: [{
-                  key: 1311,
-                  name: 'Jim Green jr.',
-                  age: 25,
-                  address: 'London No. 3 Lake Park',
-                }, {
-                  key: 1312,
-                  name: 'Jimmy Green sr.',
-                  age: 18,
-                  address: 'London No. 4 Lake Park',
-                }],
-              }],
-            }],
-          }, {
-            key: 2,
-            name: 'Joe Black',
-            age: 32,
-            address: 'Sidney No. 1 Lake Park',
-          }];
           yield put({
-            type:'querySuccess',
-            payload:{
-              list:list,
-              total:23,
-              current:1
-            }
+            type:'updateQueryKey',
+            payload:{currentPage:1,field:'',keyword:'',...payload}
           });
-
-          // yield put({
-          //   type:'updateQueryKey',
-          //   payload:{page:1,field:'',keyword:'',...payload}
-          // });
-          // const {data}=yield call(menulist,parse(payload));
-          // if(data){
-          //   yield put({
-          //     type:'querySuccess',
-          //     payload:{
-          //       list:data.data,
-          //       total:data.page.total,
-          //       current:data.page.current
-          //     }
-          //   });
-          // }
+          const {data}=yield call(menulist,parse(payload));
+          if(data.success){
+            yield put({
+              type:'querySuccess',
+              payload:{
+                list:data.data,
+                total:data.recordCount,
+                current:payload?payload.currentPage:1
+              }
+            });
+          }
       },
-      *create({payload},{call,put}){
+      *queryChilds({payload},{call,put}){
+        // yield put({type:'showLoading'});
+        debugger;
+        const {data}=yield call(queryChilds,payload);
+        if(data&&data.success){
+           yield put({
+             type:'expandChild',
+             payload:data.data,
+           })
+        }
+      },
+      *create({payload},{call,put,select}){
         yield put({type:'showLoading'});
         yield put({type:'hideModal'});
         const {data}=yield call(create,payload);
         if(data&&data.success){
+          const currentPage=yield select(menus=>menus.currentPage)
           yield put({
             type:'createSuccess',
             payload:{
               list: data.data,
-              total: data.page.total,
-              current: data.page.current,
+              total: data.recordCount,
+              current: currentPage,
               field: '',
               keyword: '',
             }
@@ -177,27 +129,57 @@ export default {
       },
       *update({payload},{call,put,select}){
         yield put({type:'showLoading'});
-        yield put({type:'hideModal'});
-        const id=yield select(({menus})=>menus.currentItem.pid);
-        const newMenus={...payload,id};
-        const {data}=yield call(update,newUsers);
+        // yield put({type:'hideModal'});
+        //const id=yield select(({menus})=>menus.currentItem.pid);
+        //const newMenus={...payload,id};
+        const {data}=yield call(update,payload);
         if(data&&data.success){
           yield put({
             type:'updateSuccess',
             payload:newMenus
           }
           )
+        }else{
+          yield put({
+            type:'errShow',
+            payload:{
+              errMessage:data.message
+            }
+          })
         }
       },
+      *'delete'({payload},{call,put}){
+        yield put({type:'showLoading'});
+        const {data}=yield call(remove,{id:payload});
+        if(data&&data.success){
+          debugger;
+          yield put({
+            type:'deleteSuccess',
+            payload,
+          })
+        }
+      }
 
     },
 
   //},
 
   reducers:{
-
+    // expandChild(state,action){
+    //   const childs=action.payload;
+    //   const newTree=state.list.map(menus=>{
+    //     if(menus.id==childs[0].parentpid){
+    //       menus.children=childs;
+    //     }
+    //     return menus;
+    //   })
+    //   return {...state,list:newTree}
+    // },
     showLoading(state){
       return {...state,loading:true}
+    },
+    errShow(state,action){
+      return {...state,...action.payload,errShow:'block',loading:false}
     },
     showModal(state,action){
       return {...state,...action.payload,modalVisible: true};
@@ -220,21 +202,22 @@ export default {
     createSuccess(state,action){
       return { ...state, ...action.payload, loading: false };
     },
-    // deleteSuccess(state,action){
-    //   const deleteId=action.payload;
-    //   const newUserList=state.list.filter(user=>user.id!=deleteId);
-    //   return {...state,list:newUserList,loading: false};
-    // },
-    // updateSuccess(state,action){
-    //   const updateUser=action.payload;
-    //   const newUserList=state.list.map(user=>{
-    //     if(user.id==updateUser.id){
-    //       return {...user,...updateUser};
-    //     }
-    //     return user;
-    //   })
-    //   return {...state,list:newUserList,loading:false};
-    // },
+    deleteSuccess(state,action){
+      debugger;
+      const deleteId=action.payload;
+      const newUserList=state.list.filter(user=>user.id!=deleteId);
+      return {...state,list:newUserList,loading: false};
+    },
+    updateSuccess(state,action){
+      const updatemenus=action.payload;
+      const newMenusList=state.list.map(menus=>{
+        if(menus.id==updatemenus.id){
+          return {...menus,...updatemenus};
+        }
+        return menus;
+      })
+      return {...state,list:newMenusList,loading:false,modalVisible:false};
+    },
     updateQueryKey(state, action) {
       return { ...state, ...action.payload };
     },

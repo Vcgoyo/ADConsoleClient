@@ -46,14 +46,16 @@ export default function request(url, options) {
   //   curURL=curURL+'?'+params;
   // }
   const headers=new Headers();
-  headers.append('Content-Type','text/plain');
+  if(options&&options.method){
+    headers.append('Content-Type','application/json')
+  }
+  //headers.append('Content-Type','text/plain');
 
   if(sessionStorage['Token']){
     document.cookie='Authorization='+sessionStorage['Token'];
   }
-  if(options){
 
-  }
+
   const  coptions={mode: "cors",credentials: 'include',headers:headers};
   Object.assign(coptions,options);
   return fetch(curURL,coptions)

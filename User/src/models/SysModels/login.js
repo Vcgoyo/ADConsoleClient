@@ -32,7 +32,6 @@ export default {
       yield put({type:'showLoading'});
 
       const {data}=yield call(dologin,userloginmsg);
-      console.info(data);
       if(data&&data.success==true){
         sessionStorage['Token']=data.text;
         yield put(routerRedux.push('/index'));
